@@ -1,0 +1,3 @@
+[submodule "components/vl53l0x"]
+	path = components/vl53l0x
+	url = git@github.com:ArvoreDosSaberes/VL53L0.git
