@@ -19,7 +19,7 @@ int main()
         sleep_ms(100);
     }
 
-    VL53L0X_Log("VL53L0X init\n");
+    vl53l0x_platform_log("VL53L0X init\n");
 
     // I2C Initialisation. Using it at 400Khz.
     i2c_init(I2C_PORT, 400*1000);
@@ -28,22 +28,23 @@ int main()
     gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);
     gpio_pull_up(I2C_SDA);
     gpio_pull_up(I2C_SCL);
-    VL53L0X_Log("Porta I2C inicializada\n");
+    vl53l0x_platform_log("Porta I2C inicializada\n");
     
     // Setup VL53L0X dev
     VL53L0X_Dev_t dev = {
-        .i2c = I2C_PORT,
-        .address = 0x29
+        .I2cDevAddr = 0x29,
+        .comms_type = VL53L0X_COMMS_I2C,
+        .comms_speed_khz = 400
     };
-    VL53L0X_Error status = VL53L0X_InitDevice(&dev);
+    VL53L0X_Error status = VL53L0X_DataInit(&dev);
     if (status != VL53L0X_ERROR_NONE) {
-        VL53L0X_Log("VL53L0X init failed\n");
+        vl53l0x_platform_log("VL53L0X init failed\n");
         return -1;
     }
 
     while (1) {
         uint16_t distance;
-        status = VL53L0X_GetDistance(&dev, &distance);
+        status = VL53L0X_PerformSingleRangingMeasurement(&dev, &distance);
         if (status == VL53L0X_ERROR_NONE) {
             printf("Distance: %u mm\n", distance);
         } else {

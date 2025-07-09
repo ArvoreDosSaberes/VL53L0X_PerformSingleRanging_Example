@@ -37,9 +37,11 @@ pico_sdk_init()
 
 add_executable(Sensor_distancia_VL53L0X
     main.c
-    components/vl53l0x/vl53l0x_api.c
+    components/vl53l0x/vl53l0x_api_calibration.c
     components/vl53l0x/vl53l0x_api_core.c
     components/vl53l0x/vl53l0x_api_ranging.c
+    components/vl53l0x/vl53l0x_api_strings.c
+    components/vl53l0x/vl53l0x_api.c
     board/vl53l0x_platform.c
     board/vl53l0x_platform_log.c
 )
